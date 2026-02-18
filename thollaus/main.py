@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from thollaus import MainWindow
+from MainWindow import MainWindow
 
 def main():
     app = QApplication(sys.argv)

@@ -1,11 +1,11 @@
-from PyQt6.QtWidgets import QMainWindow,
+from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import uic
 
 
-class View(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('GUI.ui', self)
+        uic.loadUi('.\GUI.ui', self)
 
         self.comboBox_2.addItems(["Ubahn", "Bus", "Straßenban", "SBahn"])
         self.spinBox.setRange(1, 12)
@@ -35,3 +35,7 @@ class View(QMainWindow):
         self.comboBox_2.clear()
         self.spinbox.clear()
         self.statusbar.clearMessage()
+
+    def exit(self):
+        pushbutton_3.clicked.connect(self.button_pressed)
+
