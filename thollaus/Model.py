@@ -10,7 +10,7 @@ class Model:
         self.monat = None
         self.jahresausgabe = False
 
-    def Jahresansicht_for_Verkehrsmittel(self, verkehrsmittel):
+    def get_Jahresansicht_for_Verkehrsmittel(self, verkehrsmittel):
         url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
         try:
             response = requests.get(url, timeout=5)
@@ -32,7 +32,8 @@ class Model:
         except requests.RequestException as e:
             return f"Fehler bei der Anfrage: {e}"
 
-
+    def patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
+        url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
 
 
 # ---Testcases ---

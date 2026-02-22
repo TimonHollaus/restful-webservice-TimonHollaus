@@ -64,16 +64,16 @@ def get_Jahresansicht_for_Verkehrsmittel(verkehrsmittel):
 
 
 @app.route('/verkehr/<string:verkehrsmittel>/', methods=['PUT'])
-def set_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
+def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
     if verkehrsmittel not in verkehr:
         return make_response(jsonify({"error": "Verkehrsmittel nicht gefunden"}), HTTPStatus.NOT_FOUND)
 
     data = request.get_json()
     if not data:
-        return make_response(jsonify({"error": "Kein Json Body empfangen"}), HTTPStatus.BAD_REQUEST)
+        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
 
-    mitarbeiteranzahl = data.get("Mitarbeiteranzahl")
     monat = data.get("monat")
+    mitarbeiteranzahl = data.get("Mitarbeiteranzahl")
 
     for eintrag in verkehr[verkehrsmittel]:
         if eintrag["monat"] == monat:
@@ -81,6 +81,23 @@ def set_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
             return make_response(jsonify({"message": "Mitarbeiteranzahl aktualisiert"}), HTTPStatus.OK)
 
     return make_response(jsonify({"error": "Monat im Datensatz nicht vorhanden"}), HTTPStatus.NOT_FOUND)
+
+@app.route('/verkehr/<string:verkehrsmittel>', methods=['PATCH'])
+def patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
+
+    data = request.get_json()
+
+    monat = data.get("monat")
+    mitarbeiteranzahl = data.get("Mitarbeiteranzahl")
+    if not (1 <= monat <= 12) or not (-250 <= mitarbeiteranzahl <= 250):
+        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
+
+    for eintrag in verkehr[verkehrsmittel]:
+        if eintrag["monat"] == monat:
+            eintrag["Mitarbeiteranzahl"] += mitarbeiteranzahl
+            return make_response(jsonify({"message": "Erfolgfreich erhöht"}), HTTPStatus.OK)
+
+    return make_response(jsonify({"error": "Verkehrsmittel oder Monat nicht gefunden"}), HTTPStatus.NOT_FOUND)
 
 
 if __name__ == '__main__':

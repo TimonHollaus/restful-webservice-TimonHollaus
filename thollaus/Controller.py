@@ -17,7 +17,7 @@ class Controller:
 
         text = "Für das Verkehrsmittel " + current_Verkehrsmittel + " wurden folgende Mitarbeiterdaten erhoben: \n"
 
-        data  = self.model.Jahresansicht_for_Verkehrsmittel(current_Verkehrsmittel)
+        data  = self.model.get_Jahresansicht_for_Verkehrsmittel(current_Verkehrsmittel)
         if self.view.get_Jahresansicht():
             #json_string = json.dumps(data, indent=2, sort_keys=True)
             for eintrag in data:
