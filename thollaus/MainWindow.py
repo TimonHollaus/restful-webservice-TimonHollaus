@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
     def get_Monat(self):
         return self.spinBox_monat.value()
 
-    def  get_Jahresansicht(self):
+    def get_Jahresansicht(self):
         return self.checkBox_jahresansicht.isChecked()
 
     def set_Result(self, message):

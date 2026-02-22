@@ -48,7 +48,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_2"/>
+        <widget class="QComboBox" name="comboBox_Verkehrsmittel"/>
        </item>
        <item>
         <widget class="QLabel" name="label_3">
@@ -61,10 +61,10 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinBox"/>
+        <widget class="QSpinBox" name="spinBox_monat"/>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="checkBox_jahresansicht">
          <property name="text">
           <string>Jahresausgabe</string>
          </property>
@@ -78,7 +78,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="pushButton_start">
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
          </property>
@@ -88,7 +88,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="pushButton_reset">
          <property name="text">
           <string>Reset</string>
          </property>
@@ -98,7 +98,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="pushButton_exit">
          <property name="text">
           <string>Exit</string>
          </property>

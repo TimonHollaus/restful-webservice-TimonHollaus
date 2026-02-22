@@ -13,20 +13,27 @@ class Controller:
 
     def start(self):
         current_Verkehrsmittel = self.view.get_Verkehrsmittel()
-        result = "Für das Verkehrsmittel " + current_Verkehrsmittel + " wurden folgende Mitarbeiterdaten erhoben: \n"
-        result += self.model.Jahresansicht_for_Verkehrsmittel(current_Verkehrsmittel)
+        monate = ["Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
 
-        json_string = json.dumps(result, indent=2, sort_keys=True)
-        self.view.set_Result(json_string)
+        text = "Für das Verkehrsmittel " + current_Verkehrsmittel + " wurden folgende Mitarbeiterdaten erhoben: \n"
 
+        data  = self.model.Jahresansicht_for_Verkehrsmittel(current_Verkehrsmittel)
+        if self.view.get_Jahresansicht():
+            #json_string = json.dumps(data, indent=2, sort_keys=True)
+            for eintrag in data:
+                monat_name = monate[eintrag["monat"] - 1]
+                mitarbeiteranzahl = eintrag["Mitarbeiteranzahl"]
+                text += monat_name + ": " + str(mitarbeiteranzahl) + " Beschäftigte\n"
+        else:
+            monat_index = self.view.get_Monat()
+            monat_name = monate[monat_index -1]
+            for eintrag in data:
+                if eintrag["monat"] == monat_index:
+                    mitarbeiteranzahl = eintrag["Mitarbeiteranzahl"]
+            text += monat_name + ": " + str(mitarbeiteranzahl) + " Beschäftigte"
 
-        #self.view.set_Result(current_Verkehrsmittel)
+        self.view.set_Result(text)
 
-        #if(self.view.get_Jahresansicht):
-        #        result = self.model.Jahresansicht_for_Verkehrsmittel(current_Verkehrsmittel)
-        #        self.view.set_Result(result)
-        #else:
-        #    self.view.set_Result("ist nicht angehakt")
 
     def reset(self):
         self.view.reset_inputs()
