@@ -7,35 +7,36 @@ class MainWindow(QMainWindow):
         super().__init__()
         uic.loadUi('.\GUI.ui', self)
 
-        self.comboBox_2.addItems(["Ubahn", "Bus", "Straßenban", "SBahn"])
-        self.spinBox.setRange(1, 12)
-        self.spinBox.setValue(1)
+        self.comboBox_Verkehrsmittel.addItems(["bus", "ubahn", "tram"])
+        self.spinBox_monat.setRange(1, 12)
+        self.spinBox_monat.setValue(1)
 
 
-    def get_verkehrsmittel(self):
-        return self.comboBox_2.currentText()
+    def get_Verkehrsmittel(self):
+        return self.comboBox_Verkehrsmittel.currentText()
 
-    def get_monat(self):
-        return self.spinBox.value()
+    def get_Monat(self):
+        return self.spinBox_monat.value()
 
-    def  get_Jahresausgabe(self):
-        return self.checkBox.isChecked()
+    def  get_Jahresansicht(self):
+        return self.checkBox_jahresansicht.isChecked()
 
-    def set_text(self, message):
+    def set_Result(self, message):
         self.textBrowser.setText(message)
+        self.set_status("Anzeige aktualisiert")
 
     def set_status(self, message):
         """Setzt die Statusbar-Nachricht"""
         self.statusbar.showMessage(message)
 
 
-    def clear_inputs(self):
+    def reset_inputs(self):
         """Setzt alle Eingabefelder zurück"""
-        self.setValue(0.0)
-        self.comboBox_2.clear()
-        self.spinbox.clear()
-        self.statusbar.clearMessage()
+        self.comboBox_Verkehrsmittel.setCurrentIndex(0)
+        self.spinBox_monat.setValue(1)
+        self.checkBox_jahresansicht.setChecked(False)
+        self.textBrowser.clear()
+        self.set_status("Eingaben zurückgesetzt")
 
-    def exit(self):
-        pushbutton_3.clicked.connect(self.button_pressed)
+
 
