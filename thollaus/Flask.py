@@ -3,7 +3,7 @@ from traceback import format_list
 
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
-
+from markdown_it.rules_block.list import markTightParagraphs
 
 app = Flask(__name__)
 CORS(app)
@@ -48,8 +48,7 @@ verkehr = {
         {"monat": 8, "Mitarbeiteranzahl": 27},
         {"monat": 9, "Mitarbeiteranzahl": 85},
         {"monat": 10, "Mitarbeiteranzahl": 74},
-        {"monat": 11, "Mitarbeiteranzahl": 84},
-        {"monat": 12, "Mitarbeiteranzahl": 56}
+        {"monat": 11, "Mitarbeiteranzahl": 84}
     ]
 }
 
@@ -68,12 +67,13 @@ def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
     if verkehrsmittel not in verkehr:
         return make_response(jsonify({"error": "Verkehrsmittel nicht gefunden"}), HTTPStatus.NOT_FOUND)
 
-    data = request.get_json()
-    if not data:
-        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
+    try:
+        data = request.get_json()
 
-    monat = data.get("monat")
-    mitarbeiteranzahl = data.get("Mitarbeiteranzahl")
+        monat = data.get("monat")
+        mitarbeiteranzahl = data.get("Mitarbeiteranzahl")
+    except:
+        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
 
     for eintrag in verkehr[verkehrsmittel]:
         if eintrag["monat"] == monat:
@@ -85,10 +85,14 @@ def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
 @app.route('/verkehr/<string:verkehrsmittel>', methods=['PATCH'])
 def patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
 
-    data = request.get_json()
+    try:
+        data = request.get_json()
 
-    monat = data.get("monat")
-    mitarbeiteranzahl = data.get("Mitarbeiteranzahl")
+        monat = data.get("monat")
+        mitarbeiteranzahl = data.get("Mitarbeiteranzahl")
+    except:
+        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
+
     if not (1 <= monat <= 12) or not (-250 <= mitarbeiteranzahl <= 250):
         return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
 
@@ -99,6 +103,29 @@ def patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
 
     return make_response(jsonify({"error": "Verkehrsmittel oder Monat nicht gefunden"}), HTTPStatus.NOT_FOUND)
 
+@app.route('/verkehr/<string:verkehrsmittel>', methods=['POST'])
+def post_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
+
+    try:
+        data = request.get_json()
+        monat = data.get("monat")
+        mitarbeiteranzahl = data.get("Mitarbeiteranzahl")
+    except:
+        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
+
+    if not (1 <= monat <= 12) or not (0 <= mitarbeiteranzahl <= 250):
+        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
+
+    if verkehrsmittel not in verkehr:
+        return make_response(jsonify({"error": "Verkehrsmittel nicht gefunden"}), HTTPStatus.NOT_FOUND)
+
+    for eintrag in verkehr[verkehrsmittel]:
+        if eintrag["monat"] == monat:
+            return make_response(jsonify({"error": "Monat bereits vorhanden"}), HTTPStatus.CONFLICT)
+
+    neuer_eintrag = {"monat": monat, "Mitarbeiteranzahl": mitarbeiteranzahl}
+    verkehr[verkehrsmittel].append(neuer_eintrag)
+    return make_response(jsonify({"message": "Erfolgreich angelegt"}), HTTPStatus.CREATED)
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
