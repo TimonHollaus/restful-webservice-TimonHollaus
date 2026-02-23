@@ -127,5 +127,26 @@ def post_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
     verkehr[verkehrsmittel].append(neuer_eintrag)
     return make_response(jsonify({"message": "Erfolgreich angelegt"}), HTTPStatus.CREATED)
 
+@app.route('/verkehr/<string:verkehrsmittel>', methods=['DELETE'])
+def delete_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
+    try:
+        data = request.get_json()
+        monat = data.get("monat")
+    except:
+        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
+
+    if not (1 <= monat <= 12):
+        return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
+
+
+    for eintrag in verkehr[verkehrsmittel]:
+        if eintrag["monat"] == monat:
+            del eintrag["Mitarbeiteranzahl"]
+            return make_response(jsonify({"message": "Erfolgreich gelöscht"}), HTTPStatus.NO_CONTENT)
+
+    if verkehrsmittel not in verkehr:
+        return make_response(jsonify({"error": "Verkehrsmittel oder Monat nicht gefunden"}), HTTPStatus.NOT_FOUND)
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
