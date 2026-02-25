@@ -47,7 +47,36 @@ def test_Jahresansicht_for_Verkehrsmittel():
     print("passed")
 
 
+def test_get_bekanntes_verkehrsmittel_gibt_liste_zurueck():
+    model = Model()
+    result = model.get_Jahresansicht_for_Verkehrsmittel("bus")
+    assert isinstance(result, list), f"Erwartet eine Liste, bekam: {type(result)}"
+    assert len(result) == 12, f"Erwartet 12 Monate, bekam: {len(result)}"
+    assert all("monat" in eintrag for eintrag in result), "Jeder Eintrag muss 'monat' enthalten"
+    print("test_get_bekanntes_verkehrsmittel_gibt_liste_zurueck passed")
+
+
+def test_get_unbekanntes_verkehrsmittel_gibt_fehler_zurueck():
+    model = Model()
+    result = model.get_Jahresansicht_for_Verkehrsmittel("auto")
+    assert isinstance(result, dict), "Erwartet ein Dict mit Fehler"
+    assert "error" in result
+    assert result["status_code"] == 404
+    print("test_get_unbekanntes_verkehrsmittel_gibt_fehler_zurueck passed")
+
+
+def test_get_alle_verkehrsmittel():
+    model = Model()
+    for vm in ["bus", "tram", "ubahn"]:
+        result = model.get_Jahresansicht_for_Verkehrsmittel(vm)
+        assert isinstance(result, list), f"Erwartet eine Liste für {vm}"
+        assert len(result) == 12, f"Erwartet 12 Einträge für {vm}, bekam: {len(result)}"
+        assert all("monat" in e for e in result), f"Jeder Eintrag von {vm} muss 'monat' enthalten"
+    print("test_get_alle_verkehrsmittel passed")
+
 
 if __name__ == '__main__':
     print("Running tests...")
-    test_Jahresansicht_for_Verkehrsmittel()
+    test_get_bekanntes_verkehrsmittel_gibt_liste_zurueck()
+    test_get_unbekanntes_verkehrsmittel_gibt_fehler_zurueck()
+    test_get_alle_verkehrsmittel()

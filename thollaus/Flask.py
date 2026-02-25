@@ -1,9 +1,7 @@
 from http import HTTPStatus
-from traceback import format_list
 
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
-from markdown_it.rules_block.list import markTightParagraphs
 
 app = Flask(__name__)
 CORS(app)
