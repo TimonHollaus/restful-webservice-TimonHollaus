@@ -14,12 +14,23 @@ class Model:
         url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
         try:
             response = requests.get(url, timeout=5)
-            if response.status_code == 200:
-                return response.json()
-            else:
-                return {"error": "keine Daten gefunden", "status_code": response.status_code}
-        except requests.RequestException as e:
-            return f"Fehler bei der Anfrage: {e}"
+            # Prüft auf HTTP-Fehler (4xx, 5xx)
+            response.raise_for_status()
+            return response.json()
+
+        except requests.exceptions.ConnectionError:
+            return {"error": "Server nicht erreichbar", "details": "Der Endpoint unter localhost:5000 antwortet nicht."}
+
+        except requests.exceptions.Timeout:
+            return {"error": "Zeitüberschreitung", "details": "Die Anfrage hat zu lange gedauert."}
+
+        except requests.exceptions.HTTPError as e:
+            return {"error": "HTTP-Fehler", "status_code": e.response.status_code}
+
+        except requests.exceptions.RequestException as e:
+            # Fängt alle übrigen requests-Fehler ab
+            return {"error": "Allgemeiner Fehler", "message": str(e)}
+
 
 #    def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
 #        url = f"http://localhost:5000/verkehr/{verkehrsmittel}/"
