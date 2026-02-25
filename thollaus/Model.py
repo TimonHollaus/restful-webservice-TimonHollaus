@@ -17,23 +17,23 @@ class Model:
             if response.status_code == 200:
                 return response.json()
             else:
-                return "keine Daten gefunden"
+                return {"error": "keine Daten gefunden", "status_code": response.status_code}
         except requests.RequestException as e:
             return f"Fehler bei der Anfrage: {e}"
 
-    def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
-        url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
-        try:
-            response = requests.put(url, json={"monat": monat, "Mitarbeiteranzahl": Mitarbeiteranzahl}, timeout=5)
-            if response.status_code == 200:
-                return response.json()
-            else:
-                return "Fehler beim Aktualisieren der Daten"
-        except requests.RequestException as e:
-            return f"Fehler bei der Anfrage: {e}"
-
-    def patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
-        url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
+#    def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
+#        url = f"http://localhost:5000/verkehr/{verkehrsmittel}/"
+#        try:
+#            response = requests.put(url, json={"monat": monat, "Mitarbeiteranzahl": Mitarbeiteranzahl}, timeout=5)
+#            if response.status_code == 200:
+#                return response.json()
+#            else:
+#                return "Fehler beim Aktualisieren der Daten"
+#        except requests.RequestException as e:
+#            return f"Fehler bei der Anfrage: {e}"
+#
+#    def patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
+#        url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
 
 
 # ---Testcases ---
