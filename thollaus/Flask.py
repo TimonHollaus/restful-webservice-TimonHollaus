@@ -52,6 +52,32 @@ verkehr = {
 
 
 
+@app.route('/', methods=['GET'])
+def api_guide():
+    """Root-Route mit API-Übersicht"""
+    guide = {
+        "API_Guide": "Wiener Verkehrsbetriebe - Mitarbeiter Management API",
+        "Version": "1.0",
+        "Verfügbare_Verkehrsmittel": ["bus", "tram", "ubahn"],
+        "Endpoints": {
+            "GET /verkehr/<verkehrsmittel>": "Alle Monatswerte eines Verkehrsmittels abrufen",
+            "POST /verkehr/<verkehrsmittel>": "Neuen Monatswert hinzufügen (0-250 Beschäftigte)",
+            "PUT /verkehr/<verkehrsmittel>/": "Mitarbeiteranzahl für Monat überschreiben (0-250 Beschäftigte)",
+            "PATCH /verkehr/<verkehrsmittel>": "Monatswert teilweise ändern (Delta: -250 bis +250)",
+            "DELETE /verkehr/<verkehrsmittel>": "Eintrag für Verkehrsmittel und Monat entfernen"
+        },
+        "Parameter_Format": {
+            "monat": "1-12 (Integer)",
+            "Mitarbeiteranzahl": "0-250 für POST/PUT, -250 bis +250 für PATCH"
+        },
+        "Beispiel": {
+            "GET": "http://localhost:5000/verkehr/bus",
+            "POST": 'curl -X POST http://localhost:5000/verkehr/bus -H "Content-Type: application/json" -d \'{"monat": 1, "Mitarbeiteranzahl": 45}\''
+        }
+    }
+    return make_response(jsonify(guide), HTTPStatus.OK)
+
+
 @app.route('/verkehr/<string:verkehrsmittel>', methods=['GET'])
 def get_Jahresansicht_for_Verkehrsmittel(verkehrsmittel):
     if verkehrsmittel in verkehr:
@@ -127,6 +153,9 @@ def post_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
 
 @app.route('/verkehr/<string:verkehrsmittel>', methods=['DELETE'])
 def delete_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
+    if verkehrsmittel not in verkehr:
+        return make_response(jsonify({"error": "Verkehrsmittel nicht gefunden"}), HTTPStatus.NOT_FOUND)
+
     try:
         data = request.get_json()
         monat = data.get("monat")
@@ -136,14 +165,13 @@ def delete_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel):
     if not (1 <= monat <= 12):
         return make_response(jsonify({"error": "Ungültige Eingabe"}), HTTPStatus.BAD_REQUEST)
 
-
-    for eintrag in verkehr[verkehrsmittel]:
+    # Eintrag komplett entfernen statt nur Mitarbeiteranzahl zu löschen
+    for i, eintrag in enumerate(verkehr[verkehrsmittel]):
         if eintrag["monat"] == monat:
-            del eintrag["Mitarbeiteranzahl"]
-            return make_response(jsonify({"message": "Erfolgreich gelöscht"}), HTTPStatus.NO_CONTENT)
+            verkehr[verkehrsmittel].pop(i)
+            return make_response(jsonify({"message": "Eintrag erfolgreich gelöscht"}), HTTPStatus.OK)
 
-    if verkehrsmittel not in verkehr:
-        return make_response(jsonify({"error": "Verkehrsmittel oder Monat nicht gefunden"}), HTTPStatus.NOT_FOUND)
+    return make_response(jsonify({"error": "Monat nicht gefunden"}), HTTPStatus.NOT_FOUND)
 
 
 if __name__ == '__main__':

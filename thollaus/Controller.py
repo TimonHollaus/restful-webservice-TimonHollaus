@@ -49,6 +49,7 @@ class Controller:
                 formatted_text = self.model.format_to_html(data, current_Verkehrsmittel)
 
         self.view.set_Result_tab1(formatted_text)
+        self.view.set_status(f"Daten für {current_Verkehrsmittel} abgerufen")
 
     def start_tab2(self):
         verkehrsmittel = self.view.get_Verkehrsmittel_tab2()
@@ -56,6 +57,27 @@ class Controller:
         monat = self.view.get_Monat_tab2()
         mitarbeiteranzahl = self.view.get_Mitarbeiteranzahl_tab2()
         
+        # Für Jahresansicht: Alle 3 Verkehrsmittel in separaten TextBrowser anzeigen
+        if aktion == "Jahresansicht":
+            self.view.clear_all_results_tab2()
+            
+            # Daten für alle 3 Verkehrsmittel abrufen
+            bus_data = self.model.get_Jahresansicht_for_Verkehrsmittel("bus")
+            tram_data = self.model.get_Jahresansicht_for_Verkehrsmittel("tram")
+            ubahn_data = self.model.get_Jahresansicht_for_Verkehrsmittel("ubahn")
+            
+            # HTML für jedes Verkehrsmittel erstellen
+            bus_html = self.model.format_to_html(bus_data, "bus")
+            tram_html = self.model.format_to_html(tram_data, "tram")
+            ubahn_html = self.model.format_to_html(ubahn_data, "ubahn")
+            
+            # Alle 3 TextBrowser setzen
+            success = self.view.set_all_verkehrsmittel_results(bus_html, tram_html, ubahn_html)
+            
+            self.view.set_status(f"Jahresübersicht geladen für: {', '.join(success)}")
+            return
+        
+        # Standard CRUD-Operationen
         result = None
         
         if aktion == "PUT":
@@ -80,6 +102,43 @@ class Controller:
             formatted_text = "<b style='color:red;'>Keine Antwort erhalten</b>"
             
         self.view.set_Result_tab2(formatted_text)
+        
+        # StatusBar-Information hinzufügen
+        if "error" in result:
+            self.view.set_status(f"Fehler bei {aktion} für {verkehrsmittel}")
+        else:
+            self.view.set_status(f"{aktion} für {verkehrsmittel}, Monat {monat} erfolgreich")
+    
+    def format_all_verkehrsmittel_overview(self, all_data):
+        """Formatiert Übersicht aller 3 Verkehrsmittel"""
+        html = "<h2 style='text-align: center; color: #2c5282;'>Jahresübersicht aller Verkehrsmittel</h2>"
+        html += "<div style='display: flex; justify-content: space-around;'>"
+        
+        verkehrsmittel_namen = {"bus": "🚌 Bus", "tram": "🚊 Tram", "ubahn": "🚇 U-Bahn"}
+        monate = ["Jän", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+        
+        for vm, data in all_data.items():
+            html += f"<div style='margin: 10px; padding: 15px; border: 2px solid #4a90e2; border-radius: 8px;'>"
+            html += f"<h3 style='text-align: center; color: #4a90e2; margin-bottom: 15px;'>{verkehrsmittel_namen[vm]}</h3>"
+            
+            if isinstance(data, dict) and "error" in data:
+                html += f"<p style='color: red;'>❌ Fehler: {data['error']}</p>"
+            elif isinstance(data, list):
+                html += "<table style='width: 100%; border-collapse: collapse;'>"
+                for eintrag in data:
+                    monat_idx = eintrag.get("monat", 0) - 1
+                    if 0 <= monat_idx < 12:
+                        monat_name = monate[monat_idx]
+                        anzahl = eintrag.get("Mitarbeiteranzahl", "N/A")
+                        html += f"<tr><td style='padding: 3px; border-bottom: 1px solid #ddd;'><b>{monat_name}:</b></td><td style='padding: 3px; text-align: right;'>{anzahl}</td></tr>"
+                html += "</table>"
+            else:
+                html += f"<p style='color: orange;'>⚠️ Unbekanntes Datenformat</p>"
+            
+            html += "</div>"
+        
+        html += "</div>"
+        return html
 
 
     def reset(self):

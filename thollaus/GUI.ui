@@ -18,11 +18,11 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Mitarbeiterbersicht">
        <attribute name="title">
-        <string>Tab 1</string>
+        <string>Mitarbeiterübersicht</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
@@ -113,7 +113,7 @@
       </widget>
       <widget class="QWidget" name="AdminDashboard">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Admin-Dashboard</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -204,13 +204,17 @@
            </layout>
           </item>
           <item>
-           <widget class="QTextBrowser" name="textBrowser_tab2">
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QTextBrowser" name="textBrowser_tab2_1"/>
+            </item>
+            <item>
+             <widget class="QTextBrowser" name="textBrowser_tab2_2"/>
+            </item>
+            <item>
+             <widget class="QTextBrowser" name="textBrowser_tab2_3"/>
+            </item>
+           </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
