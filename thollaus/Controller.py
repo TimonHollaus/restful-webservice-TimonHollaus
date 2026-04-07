@@ -60,8 +60,14 @@ class Controller:
         
         if aktion == "PUT":
             result = self.model.put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel, monat, mitarbeiteranzahl)
+        elif aktion == "PATCH":
+            result = self.model.patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel, monat, mitarbeiteranzahl)
+        elif aktion == "POST":
+            result = self.model.post_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel, monat, mitarbeiteranzahl)
+        elif aktion == "DELETE":
+            result = self.model.delete_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(verkehrsmittel, monat)
         else:
-            result = {"error": f"Aktion '{aktion}' ist noch nicht implementiert"}
+            result = {"error": f"Unbekannte Aktion '{aktion}'"}
         
         if result:
             if "error" in result:
