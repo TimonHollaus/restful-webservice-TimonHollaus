@@ -40,7 +40,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox_Verkehrsmittel_2"/>
+             <widget class="QComboBox" name="comboBox_Verkehrsmittel_tab1"/>
             </item>
             <item>
              <widget class="QLabel" name="label_5">
@@ -56,7 +56,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_monat_2"/>
+             <widget class="QSpinBox" name="spinBox_monat_tab1"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_jahresansicht_2">
@@ -68,7 +68,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QTextBrowser" name="textBrowser">
+           <widget class="QTextBrowser" name="textBrowser_tab1">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -79,7 +79,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
-             <widget class="QPushButton" name="pushButton_start_2">
+             <widget class="QPushButton" name="pushButton_start_tab1">
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
               </property>
@@ -89,7 +89,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_reset_2">
+             <widget class="QPushButton" name="pushButton_reset_tab1">
               <property name="text">
                <string>Reset</string>
               </property>
@@ -99,7 +99,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_exit_2">
+             <widget class="QPushButton" name="pushButton_exit_tab1">
               <property name="text">
                <string>Exit</string>
               </property>
@@ -131,7 +131,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox_Verkehrsmittel_3">
+             <widget class="QComboBox" name="comboBox_Aktion_fuer">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -154,7 +154,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_monat_3">
+             <widget class="QSpinBox" name="spinBox_monat_tab2">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -175,7 +175,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox">
+             <widget class="QComboBox" name="comboBox_Aktion">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -204,7 +204,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QTextBrowser" name="textBrowser_2">
+           <widget class="QTextBrowser" name="textBrowser_tab2">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -215,7 +215,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item>
-             <widget class="QPushButton" name="pushButton_start_3">
+             <widget class="QPushButton" name="pushButton_start_tab2">
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
               </property>
@@ -225,7 +225,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_reset_3">
+             <widget class="QPushButton" name="pushButton_reset_tab2">
               <property name="text">
                <string>Reset</string>
               </property>
@@ -235,7 +235,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_exit_3">
+             <widget class="QPushButton" name="pushButton_exit_tab2">
               <property name="text">
                <string>Exit</string>
               </property>

@@ -6,10 +6,16 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('.\GUI.ui', self)
+        # Tab 1
+        self.comboBox_Verkehrsmittel_tab1.addItems(["bus", "ubahn", "tram"])
+        self.spinBox_monat_tab1.setRange(1, 12)
+        self.spinBox_monat_tab1.setValue(1)
 
-        self.comboBox_Verkehrsmittel.addItems(["bus", "ubahn", "tram"])
-        self.spinBox_monat.setRange(1, 12)
-        self.spinBox_monat.setValue(1)
+        # Tab2
+        self.comboBox_Aktion_fuer.addItems(["bus", "ubahn", "tram"])
+        self.comboBox_Aktion.addItems(["PUT", "PATCH", "POST", "DELETE"])
+        self.spinBox_monat_tab2.setRange(1, 12)
+        self.spinBox_monat_tab2.setValue(1)
 
 
     def get_Verkehrsmittel(self):

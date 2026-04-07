@@ -6,9 +6,18 @@ class Controller:
     def __init__(self, model, view):
         self.model = model
         self.view = view
-        self.view.pushButton_start.clicked.connect(self.start)
-        self.view.pushButton_reset.clicked.connect(self.reset)
-        self.view.pushButton_exit.clicked.connect(self.exit)
+
+        # Tab1
+        self.view.pushButton_start_tab1.clicked.connect(self.start)
+        self.view.pushButton_reset_tab1.clicked.connect(self.reset)
+        self.view.pushButton_exit_tab1.clicked.connect(self.exit)
+
+
+        # Tab2
+        self.view.pushButton_start_tab2.clicked.connect(self.start)
+        self.view.pushButton_reset_tab2.clicked.connect(self.reset)
+        self.view.pushButton_exit_tab2.clicked.connect(self.exit)
+
 
 
     def start(self):
