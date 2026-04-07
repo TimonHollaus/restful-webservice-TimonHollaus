@@ -59,7 +59,7 @@
              <widget class="QSpinBox" name="spinBox_monat_tab1"/>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_jahresansicht_2">
+             <widget class="QCheckBox" name="checkBox_jahresansicht_tab1">
               <property name="text">
                <string>Jahresausgabe</string>
               </property>

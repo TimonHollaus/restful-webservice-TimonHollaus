@@ -107,8 +107,31 @@ def test_get_alle_verkehrsmittel():
     print("test_get_alle_verkehrsmittel passed")
 
 
+def test_format_to_html():
+    model = Model()
+    
+    # Test mit gültigen Daten
+    test_data = [
+        {"monat": 1, "Mitarbeiteranzahl": 45},
+        {"monat": 2, "Mitarbeiteranzahl": 50}
+    ]
+    result = model.format_to_html(test_data, "bus")
+    assert "bus" in result, "Verkehrsmittel soll im Result stehen"
+    assert "Jänner" in result, "Monatsname soll formatiert werden"
+    assert "45 Beschäftigte" in result, "Mitarbeiteranzahl soll angezeigt werden"
+    
+    # Test mit Fehler-Daten
+    error_data = {"error": "Test Fehler", "details": "Test Details"}
+    result = model.format_to_html(error_data, "bus")
+    assert "Fehler:" in result, "Fehler soll angezeigt werden"
+    assert "Test Fehler" in result, "Fehlermeldung soll enthalten sein"
+    
+    print("test_format_to_html passed")
+
+
 if __name__ == '__main__':
     print("Running tests...")
     test_get_bekanntes_verkehrsmittel_gibt_liste_zurueck()
     test_get_unbekanntes_verkehrsmittel_gibt_fehler_zurueck()
     test_get_alle_verkehrsmittel()
+    test_format_to_html()

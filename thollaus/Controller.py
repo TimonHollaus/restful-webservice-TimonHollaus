@@ -25,7 +25,7 @@ class Controller:
         
         data = self.model.get_Jahresansicht_for_Verkehrsmittel(current_Verkehrsmittel)
 
-        if self.view.get_Jahresansicht_tab1():
+        if self.view.get_Jahresansicht():
             # Zeige alle Monate an
             formatted_text = self.model.format_to_html(data, current_Verkehrsmittel)
         else:
@@ -48,7 +48,7 @@ class Controller:
             else:
                 formatted_text = self.model.format_to_html(data, current_Verkehrsmittel)
 
-        self.view.set_Result(formatted_text)
+        self.view.set_Result_tab1(formatted_text)
 
 
     def reset(self):
