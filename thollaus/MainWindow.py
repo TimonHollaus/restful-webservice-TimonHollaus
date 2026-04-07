@@ -16,6 +16,8 @@ class MainWindow(QMainWindow):
         self.comboBox_Aktion.addItems(["PUT", "PATCH", "POST", "DELETE"])
         self.spinBox_monat_tab2.setRange(1, 12)
         self.spinBox_monat_tab2.setValue(1)
+        self.spinBox.setRange(-250, 250)
+        self.spinBox.setValue(0)
 
 
     def get_Verkehrsmittel_tab1(self):
@@ -45,6 +47,23 @@ class MainWindow(QMainWindow):
         self.textBrowser_tab1.clear()
         self.textBrowser_tab2.clear()
         self.set_status("Eingaben zurückgesetzt")
+
+    # Tab 2 Methods
+    def get_Verkehrsmittel_tab2(self):
+        return self.comboBox_Aktion_fuer.currentText()
+    
+    def get_Aktion_tab2(self):
+        return self.comboBox_Aktion.currentText()
+    
+    def get_Monat_tab2(self):
+        return self.spinBox_monat_tab2.value()
+    
+    def get_Mitarbeiteranzahl_tab2(self):
+        return self.spinBox.value()
+    
+    def set_Result_tab2(self, message):
+        self.textBrowser_tab2.setText(message)
+        self.set_status("Anzeige aktualisiert")
 
 
 
