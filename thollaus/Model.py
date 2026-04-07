@@ -32,9 +32,6 @@ class Model:
             return {"error": "Allgemeiner Fehler", "message": str(e)}
 
     def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
-        return ""
-
-    def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
         url = f"http://localhost:5000/verkehr/{verkehrsmittel}/"
         try:
             response = requests.put(url, json={"monat": monat, "Mitarbeiteranzahl": Mitarbeiteranzahl}, timeout=5)
@@ -52,6 +49,19 @@ class Model:
 
     def patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
         url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
+        try:
+            response = requests.patch(url, json={"monat": monat, "Mitarbeiteranzahl": Mitarbeiteranzahl}, timeout=5)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.ConnectionError:
+            return {"error": "Server nicht erreichbar", "details": "Der Endpoint unter localhost:5000 antwortet nicht."}
+        except requests.exceptions.Timeout:
+            return {"error": "Zeitüberschreitung", "details": "Die Anfrage hat zu lange gedauert."}
+        except requests.exceptions.HTTPError as e:
+            return {"error": "HTTP-Fehler", "status_code": e.response.status_code}
+        except requests.exceptions.RequestException as e:
+            return {"error": "Allgemeiner Fehler", "message": str(e)}
+
 
     def format_to_html(self, data, verkehrsmittel=""):
         """Formatiert die Daten aus der API für HTML-Anzeige"""
@@ -136,9 +146,30 @@ def test_format_to_html():
     print("test_format_to_html passed")
 
 
+def test_crud_operations_without_server():
+    """Testet die CRUD-Operationen ohne laufenden Server (erwartet Fehler)"""
+    model = Model()
+    
+    # Alle sollten Server-Fehler zurückgeben
+    put_result = model.put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month("bus", 1, 100)
+    assert "error" in put_result, "PUT sollte Fehler zurückgeben ohne Server"
+    
+    patch_result = model.patch_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month("bus", 1, 10)
+    assert "error" in patch_result, "PATCH sollte Fehler zurückgeben ohne Server"
+    
+    post_result = model.post_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month("bus", 13, 50)
+    assert "error" in post_result, "POST sollte Fehler zurückgeben ohne Server"
+    
+    delete_result = model.delete_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month("bus", 1)
+    assert "error" in delete_result, "DELETE sollte Fehler zurückgeben ohne Server"
+    
+    print("test_crud_operations_without_server passed")
+
+
 if __name__ == '__main__':
     print("Running tests...")
     test_get_bekanntes_verkehrsmittel_gibt_liste_zurueck()
     test_get_unbekanntes_verkehrsmittel_gibt_fehler_zurueck()
     test_get_alle_verkehrsmittel()
     test_format_to_html()
+    test_crud_operations_without_server()
