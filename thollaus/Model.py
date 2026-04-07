@@ -31,6 +31,27 @@ class Model:
             # Fängt alle übrigen requests-Fehler ab
             return {"error": "Allgemeiner Fehler", "message": str(e)}
 
+    def format_to_html(self, data, verkehrsmittel=""):
+        """Formatiert die Daten aus der API für HTML-Anzeige"""
+        if "error" in data:
+            return f"<b style='color:red;'>Fehler:</b> {data['error']}<br/>{data.get('details', data.get('message', ''))}"
+
+        monate = ["Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+        
+        if isinstance(data, list):
+            text = f"Für das Verkehrsmittel <b>{verkehrsmittel}</b> wurden folgende Mitarbeiterdaten erhoben:<br/><br/>"
+            
+            for eintrag in data:
+                monat_index = eintrag.get("monat", 0)
+                if 1 <= monat_index <= 12:
+                    monat_name = monate[monat_index - 1]
+                    mitarbeiteranzahl = eintrag.get("Mitarbeiteranzahl", "kein Eintrag")
+                    text += f"<b>{monat_name}:</b> {mitarbeiteranzahl} Beschäftigte<br/>"
+            
+            return text
+        else:
+            return f"<b>Unerwartetes Datenformat:</b> {str(data)}"
+
 
 #    def put_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
 #        url = f"http://localhost:5000/verkehr/{verkehrsmittel}/"
