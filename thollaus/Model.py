@@ -62,6 +62,35 @@ class Model:
         except requests.exceptions.RequestException as e:
             return {"error": "Allgemeiner Fehler", "message": str(e)}
 
+    def post_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat, Mitarbeiteranzahl):
+        url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
+        try:
+            response = requests.post(url, json={"monat": monat, "Mitarbeiteranzahl": Mitarbeiteranzahl}, timeout=5)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.ConnectionError:
+            return {"error": "Server nicht erreichbar", "details": "Der Endpoint unter localhost:5000 antwortet nicht."}
+        except requests.exceptions.Timeout:
+            return {"error": "Zeitüberschreitung", "details": "Die Anfrage hat zu lange gedauert."}
+        except requests.exceptions.HTTPError as e:
+            return {"error": "HTTP-Fehler", "status_code": e.response.status_code}
+        except requests.exceptions.RequestException as e:
+            return {"error": "Allgemeiner Fehler", "message": str(e)}
+
+    def delete_Mitarbeiteranzahl_for_Verkehrsmittel_AND_Month(self, verkehrsmittel, monat):
+        url = f"http://localhost:5000/verkehr/{verkehrsmittel}"
+        try:
+            response = requests.delete(url, json={"monat": monat}, timeout=5)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.ConnectionError:
+            return {"error": "Server nicht erreichbar", "details": "Der Endpoint unter localhost:5000 antwortet nicht."}
+        except requests.exceptions.Timeout:
+            return {"error": "Zeitüberschreitung", "details": "Die Anfrage hat zu lange gedauert."}
+        except requests.exceptions.HTTPError as e:
+            return {"error": "HTTP-Fehler", "status_code": e.response.status_code}
+        except requests.exceptions.RequestException as e:
+            return {"error": "Allgemeiner Fehler", "message": str(e)}
 
     def format_to_html(self, data, verkehrsmittel=""):
         """Formatiert die Daten aus der API für HTML-Anzeige"""
