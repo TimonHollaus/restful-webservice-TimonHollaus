@@ -21,16 +21,16 @@ class Controller:
 
 
     def start(self):
-        current_Verkehrsmittel = self.view.get_Verkehrsmittel()
+        current_Verkehrsmittel = self.view.get_Verkehrsmittel_tab1()
         
         data = self.model.get_Jahresansicht_for_Verkehrsmittel(current_Verkehrsmittel)
-        
-        if self.view.get_Jahresansicht():
+
+        if self.view.get_Jahresansicht_tab1():
             # Zeige alle Monate an
             formatted_text = self.model.format_to_html(data, current_Verkehrsmittel)
         else:
             # Zeige nur einen spezifischen Monat an
-            monat_index = self.view.get_Monat()
+            monat_index = self.view.get_Monat_tab1()
             monate = ["Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
             
             if isinstance(data, dict) and "error" in data:

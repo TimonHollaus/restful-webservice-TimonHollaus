@@ -18,17 +18,17 @@ class MainWindow(QMainWindow):
         self.spinBox_monat_tab2.setValue(1)
 
 
-    def get_Verkehrsmittel(self):
-        return self.comboBox_Verkehrsmittel.currentText()
+    def get_Verkehrsmittel_tab1(self):
+        return self.comboBox_Verkehrsmittel_tab1.currentText()
 
-    def get_Monat(self):
-        return self.spinBox_monat.value()
+    def get_Monat_tab1(self):
+        return self.spinBox_monat_tab1.value()
 
     def get_Jahresansicht(self):
-        return self.checkBox_jahresansicht.isChecked()
+        return self.checkBox_jahresansicht_tab1.isChecked()
 
-    def set_Result(self, message):
-        self.textBrowser.setText(message)
+    def set_Result_tab1(self, message):
+        self.textBrowser_tab1.setText(message)
         self.set_status("Anzeige aktualisiert")
 
     def set_status(self, message):
@@ -38,10 +38,12 @@ class MainWindow(QMainWindow):
 
     def reset_inputs(self):
         """Setzt alle Eingabefelder zurück"""
-        self.comboBox_Verkehrsmittel.setCurrentIndex(0)
-        self.spinBox_monat.setValue(1)
-        self.checkBox_jahresansicht.setChecked(False)
-        self.textBrowser.clear()
+        self.comboBox_Verkehrsmittel_tab1.setCurrentIndex(0)
+        self.spinBox_monat_tab1.setValue(1)
+        self.spinBox_monat_tab2.setValue(1)
+        self.checkBox_jahresansicht_tab1.setChecked(False)
+        self.textBrowser_tab1.clear()
+        self.textBrowser_tab2.clear()
         self.set_status("Eingaben zurückgesetzt")
 
 
