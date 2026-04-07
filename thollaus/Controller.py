@@ -25,7 +25,7 @@ class Controller:
             #json_string = json.dumps(data, indent=2, sort_keys=True)
             for eintrag in data:
                 monat_name = monate[eintrag.get("monat", "kein Eintrag") - 1]
-                mitarbeiteranzahl = eintrag.get("Mitarbeiteranzahl", " kein Eintrag bzw. keine")
+                mitarbeiteranzahl = eintrag.get("Mitarbeiteranzahl", " kein Eintrag")
                 text += monat_name + ": " + str(mitarbeiteranzahl) + " Beschäftigte\n"
         else:
             monat_index = self.view.get_Monat()
