@@ -3,8 +3,8 @@ import sys
 from PyQt6.QtWidgets import QApplication
 
 from MainWindow import MainWindow
-from thollaus.Model import *
-from thollaus.Controller import Controller
+from Model import Model
+from Controller import Controller
 
 
 def main():

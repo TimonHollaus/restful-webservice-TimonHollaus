@@ -73,7 +73,11 @@ class Model:
         except requests.exceptions.Timeout:
             return {"error": "Zeitüberschreitung", "details": "Die Anfrage hat zu lange gedauert."}
         except requests.exceptions.HTTPError as e:
-            return {"error": "HTTP-Fehler", "status_code": e.response.status_code}
+            try:
+                error_data = e.response.json()
+                return {"error": f"HTTP-Fehler {e.response.status_code}", "message": error_data.get("error", "Unbekannter Fehler")}
+            except:
+                return {"error": f"HTTP-Fehler {e.response.status_code}", "status_code": e.response.status_code}
         except requests.exceptions.RequestException as e:
             return {"error": "Allgemeiner Fehler", "message": str(e)}
 
@@ -92,7 +96,8 @@ class Model:
         except requests.exceptions.RequestException as e:
             return {"error": "Allgemeiner Fehler", "message": str(e)}
 
-    def format_to_html(self, data, verkehrsmittel=""):
+
+    def format_to_html(self, data, verkehrsmittel="", monat=None):
         """Formatiert die Daten aus der API für HTML-Anzeige"""
         if "error" in data:
             return f"<b style='color:red;'>Fehler:</b> {data['error']}<br/>{data.get('details', data.get('message', ''))}"
@@ -100,6 +105,19 @@ class Model:
         monate = ["Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
         
         if isinstance(data, list):
+            # Einzelmonats-Anzeige
+            if monat is not None:
+                monat_name = monate[monat - 1] if 1 <= monat <= 12 else "Unbekannt"
+                mitarbeiteranzahl = "kein Eintrag"
+                print(data)
+                for eintrag in data:
+                    if eintrag.get("monat") == monat:
+                        mitarbeiteranzahl = eintrag.get("Mitarbeiteranzahl", "kein Eintrag")
+                        break
+                
+                return f"Für das Verkehrsmittel <b>{verkehrsmittel}</b> wurden folgende Mitarbeiterdaten erhoben:<br/><br/><b>{monat_name}:</b> {mitarbeiteranzahl} Beschäftigte"
+            
+            # Jahresansicht (alle Monate)
             text = f"Für das Verkehrsmittel <b>{verkehrsmittel}</b> wurden folgende Mitarbeiterdaten erhoben:<br/><br/>"
             
             for eintrag in data:
